@@ -3,22 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Theory of legit threads</title>
+    <title>Theory of legit Threads</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;700&display=swap" rel="stylesheet">
     <style>
-           @font-face {
-      font-family: 'GoudyOldStyleBold';
-      src: url('GoudyOldStyle-Bold.ttf') format('truetype'); /* путь к файлу шрифта */
-      font-weight: bold;
-    }
-
-    .text {
-      font-family: 'GoudyOldStyleBold', serif;
-      font-size: 24px;
-    }
-        /* Общий стиль */
+        @font-face {
+            font-family: 'GoudyOldStyleBold';
+            src: url('GoudyOldStyle-Bold.ttf') format('truetype');
+            font-weight: bold;
+        }
         body {
             margin: 0;
-            font-family: 'GoudyOldStyleBold',serif;
+            font-family: 'GoudyOldStyleBold', serif;
             background-color: #fff;
             color: #000;
             line-height: 1.6;
@@ -27,8 +22,10 @@
             text-decoration: none;
             color: inherit;
         }
-
-        /* Хедер */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 300; 
+        }
         header {
             padding: 60px 20px 40px;
             text-align: center;
@@ -36,10 +33,7 @@
         }
         header h1 {
             font-size: 48px;
-            font-weight: 300;
         }
-
-        /* Навигация */
         nav {
             display: flex;
             justify-content: center;
@@ -48,7 +42,7 @@
         }
         nav a {
             font-size: 16px;
-            font-weight: 500;
+            font-weight: bold;
             padding: 5px 0;
             position: relative;
         }
@@ -66,8 +60,6 @@
         nav a:hover::after {
             width: 100%;
         }
-
-        /* Секции */
         main {
             max-width: 1000px;
             margin: 0 auto;
@@ -77,7 +69,6 @@
             margin-bottom: 80px;
         }
         h2 {
-            font-weight: 300;
             font-size: 32px;
             border-bottom: 1px solid #000;
             padding-bottom: 10px;
@@ -85,34 +76,44 @@
         }
         p {
             font-size: 16px;
-            max-width: 800px;
+            font-weight: bold; 
         }
-
-        /* Галерея */
         .gallery {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
         }
-        .gallery img {
+        .gallery-item {
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            overflow: hidden;
+            text-align: center;
+            font-family: 'GoudyOldStyleBold', serif;
+            font-weight: bold; 
+        }
+        .gallery-item img {
             width: 100%;
             display: block;
             object-fit: cover;
         }
-
-        /* Футер */
+        .gallery-item div {
+            padding: 8px;
+            background-color: #f8f8f8;
+        }
         footer {
             text-align: center;
             padding: 40px 20px;
             font-size: 14px;
             border-top: 1px solid #000;
             letter-spacing: 1px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Theory of legit threads</h1>
+        <h1>Theory of legit Threads</h1>
     </header>
     <nav>
         <a href="#bio">Biography</a>
@@ -140,44 +141,37 @@ We’re for the ones who see fashion not just as clothing, but as language, as e
         </section>
         <section id="gallery">
             <h2>Gallery</h2>
-          <div style="width: 200px; border: 1px solid #ccc; border-radius: 8px; overflow: hidden; text-align: center; font-family: Arial, sans-serif;">
-  <img src="https://i5.walmartimages.com/asr/c3ae5062-1e80-4cbb-aae2-07b736657ff7.65003c9d991b826e5a840ce7842eda86.webp?odnHeight=612&odnWidth=612&odnBg=FFFFFF" alt="ERD sweatshirt-70 euro" style="width: 100%; display: block;">
-  <div style="padding: 8px; background-color: #f8f8f8;">
-    ERD sweatshirt - 70 euro
-  </div>
-</div>
- <div style="width: 200px; border: 1px solid #ccc; border-radius: 8px; overflow: hidden; text-align: center; font-family: Arial, sans-serif;">
-    <img src="https://www.hypeneedz.com/cdn/shop/files/HellstarClassicTshirtGelPrintBlackPink_700x.jpg?v=1741795642" alt="Hellstar Classic T-shirt (gel Print) Black/pink- 70 euro" style="width: 100%; display: block;">
-    <div style="padding: 8px; background-color: #f8f8f8;">
-      Hellstar Classic T-shirt (gel Print) Black/pink- 70 euro
-    </div>
-  </div>
-   <div style="width: 200px; border: 1px solid #ccc; border-radius: 8px; overflow: hidden; text-align: center; font-family: Arial, sans-serif;">
-    <img src="https://www.hypeneedz.com/cdn/shop/files/HellstarCartoonLogoGlitterLogoTshirtBlack_700x.jpg?v=1741795097" alt="Hellstar Glitter Logo T-shirt Black- 75 euro" style="width: 100%; display: block;">
-    <div style="padding: 8px; background-color: #f8f8f8;">
-      Hellstar Glitter Logo T-shirt Black- 75 euro
-    </div>
-  </div>
- </div>
-   <div style="width: 200px; border: 1px solid #ccc; border-radius: 8px; overflow: hidden; text-align: center; font-family: Arial, sans-serif;">
-    <img src="https://image1.lacoste.com/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-DE-Site/Sites-master/de/dwb9648b21/NH4578LX_H45_24.jpg?imwidth=1920&impolicy=zoom" alt="Lacoste Bag- 60 euro" style="width: 100%; display: block;">
-    <div style="padding: 8px; background-color: #f8f8f8;">
-      Lacoste Bag- 60 euro
-    </div>
-  </div>
+            <div class="gallery">
+                <div class="gallery-item">
+                    <img src="https://i5.walmartimages.com/asr/c3ae5062-1e80-4cbb-aae2-07b736657ff7.65003c9d991b826e5a840ce7842eda86.webp?odnHeight=612&odnWidth=612&odnBg=FFFFFF" alt="ERD sweatshirt-70 euro">
+                    <div>ERD sweatshirt - 70 euro</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://www.hypeneedz.com/cdn/shop/files/HellstarClassicTshirtGelPrintBlackPink_700x.jpg?v=1741795642" alt="Hellstar Classic T-shirt (gel Print) Black/pink- 70 euro">
+                    <div>Hellstar Classic T-shirt (gel Print) Black/pink- 70 euro</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://www.hypeneedz.com/cdn/shop/files/HellstarClassicGlitterLogoTshirtBlack_700x.jpg?v=1741795797" alt="Hellstar Glitter Logo T-shirt Black- 75 euro">
+                    <div>Hellstar Glitter Logo T-shirt Black- 75 euro</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://image1.lacoste.com/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-DE-Site/Sites-master/de/dwb9648b21/NH4578LX_H45_24.jpg?imwidth=1920&impolicy=zoom" alt="Lacoste Bag- 60 euro">
+                    <div>Lacoste Bag- 60 euro</div>
+                </div>
+            </div>
         </section>
-         <section id="shipping">
+        <section id="shipping">
             <h2>Shipping</h2>
             <p>Unfortunately at the moment delivery is only in Germany, 1 item - 9.99 euros, 2 items - 4.99 euros, 3 or more items - 0.00 euros. Delivery- 3-7 days.</p>
         </section>
         <section id="contact">
             <h2>Contact</h2>
-            <p>Email: <a href="Theory.of.legit.threads@gmail.com">Theory.of.legit.threads@gmail.com</a></p>
+            <p>Email: <a href="mailto:Theory.of.legit.threads@gmail.com">Theory.of.legit.threads@gmail.com</a></p>
             <p>Instagram: <a href="#">theory_of_legit_threads</a></p>
         </section>
     </main>
     <footer>
-        &copy; 2025 Theory of legit threads
+        &copy; 2025 Theory of legit Threads
     </footer>
 </body>
-</html
+</html>
