@@ -6,6 +6,13 @@
 <title>Theory of Legit Threads — Brutal Luxury</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
+ #rain {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
 :root{
   --bg:#ffffff;
   --fg:#0a0a0a;
@@ -58,17 +65,87 @@ header{
   margin:0 auto;
 }
 .logo {
-  width:64px;
-  height:64px;
-  border-radius:8px;
-  background:var(--fg);
-  display:inline-grid;
-  place-items:center;
-  color:var(--bg);
-  font-family:"Playfair Display";
-  font-weight:700;
-  font-size:20px;
-  box-shadow:0 8px 30px rgba(10,10,10,0.08);
+  display: inline-block;
+  position: relative;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 48px;
+  color: transparent;
+  background: linear-gradient(90deg, #ff0055, #00ffff, #ff0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.logo-text {
+  position: relative;
+  display: inline-block;
+}
+
+.logo-text::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  left: -50%;
+  width: 200%;
+  height: 120%;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 100%);
+  transform: rotate(45deg);
+  animation: shine 2s infinite;
+}
+
+@keyframes shine {
+  0% {
+    left: -200%;
+  }
+  100% {
+    left: 200%;
+  }
+}
+.logo-shape {
+  display: flex; 
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: 0.04em;
+  transform: rotate(-5deg);
+  position: relative;
+}
+
+.logo-shape span {
+  display: block;
+  line-height: 1;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.15), 0 2px 5px rgba(0,0,0,0.3);
+}
+.logo::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.2), rgba(255,255,255,0) 70%);
+  transform: rotate(25deg) translateX(-100%);
+  animation: shine 2.5s infinite;
+}
+.logo svg text {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.8s ease-out;
+}
+
+.logo.show svg text {
+  opacity: 1;
+  transform: translateY(0);
+}
+@keyframes shine {
+  0% { transform: rotate(25deg) translateX(-100%); }
+  50% { transform: rotate(25deg) translateX(100%); }
+  100% { transform: rotate(25deg) translateX(-100%); }
 }
 .site-title{
   display:flex;
@@ -328,17 +405,21 @@ a:focus{ outline:2px dashed rgba(0,0,0,0.08); outline-offset:6px }
 <body>
 <div class="bg-wrap" id="bg"></div>
 <div class="cursor" id="cursor"></div>
-
 <header>
-<div class="brand" role="banner">
-  <div class="logo" aria-hidden="true">TLT</div>
-  <div class="site-title" aria-hidden="false">
-    <div class="label">Theory of Legit Threads</div>
-    <div class="sub">Resale — Editorial — Crafted</div>
+  <div class="brand" role="banner" style="justify-content:flex-start; gap:16px;">
+    <div class="logo" aria-hidden="true">
+      <svg viewBox="0 0 120 64" width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Playfair Display" font-weight="900" font-size="36" fill="#000">
+          TLT
+        </text>
+      </svg>
+    </div>
+    <div class="site-title" aria-hidden="false">
+      <div class="label">Theory of Legit Threads</div>
+      <div class="sub">Resale — Editorial — Crafted</div>
+    </div>
   </div>
-</div>
 </header>
-
 <nav class="top-nav" aria-label="Main navigation">
 <div class="nav-inner">
   <a class="nav-link" href="#bio">Biography</a>
@@ -505,6 +586,85 @@ document.addEventListener('keydown', e=>{if(e.key==='Escape')closeLightbox();});
 
 document.querySelectorAll('img').forEach(img=>{if(!img.hasAttribute('loading'))img.setAttribute('loading','lazy');});
 if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.querySelectorAll('*').forEach(n=>n.style.transitionDuration&& (n.style.transitionDuration='0.01ms'));}
+window.addEventListener('load', () => {
+  document.querySelector('.logo').classList.add('show');
+});
+</script>
+<canvas id="rain"></canvas>
+<script>
+const canvas = document.getElementById("rain");
+const ctx = canvas.getContext("2d");
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
+
+const RAIN_ANGLE = -0.4;
+const FAST_COUNT = 400;
+const SLOW_COUNT = 150;
+class Raindrop {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * -canvas.height;
+    this.len = 15 + Math.random() * 25;
+    this.speed = 8 + Math.random() * 12;
+    this.opacity = 0.2 + Math.random() * 0.3;
+  }
+  update() {
+    this.x += RAIN_ANGLE * this.speed;
+    this.y += this.speed;
+    if (this.y > canvas.height || this.x < 0 || this.x > canvas.width) this.reset();
+  }
+  draw() {
+    ctx.strokeStyle = `rgba(255,255,255,${this.opacity})`;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(this.x, this.y);
+    ctx.lineTo(this.x - RAIN_ANGLE * this.len, this.y - this.len);
+    ctx.stroke();
+  }
+}
+class Drop {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.len = 6 + Math.random() * 12;
+    this.speed = 1 + Math.random() * 2;
+    this.opacity = 0.1 + Math.random() * 0.2;
+  }
+  update() {
+    this.x += RAIN_ANGLE * this.speed; 
+    this.y += this.speed;
+    if (this.y > canvas.height || this.x < 0 || this.x > canvas.width) {
+      this.y = 0;
+      this.x = Math.random() * canvas.width;
+    }
+  }
+  draw() {
+    ctx.strokeStyle = `rgba(255,255,255,${this.opacity})`;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(this.x, this.y);
+    ctx.lineTo(this.x, this.y + this.len);
+    ctx.stroke();
+  }
+}
+
+let dropsFast = Array.from({length: FAST_COUNT}, () => new Raindrop());
+let dropsSlow = Array.from({length: SLOW_COUNT}, () => new Drop());
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  dropsFast.forEach(d => { d.update(); d.draw(); });
+  dropsSlow.forEach(d => { d.update(); d.draw(); });
+  requestAnimationFrame(animate);
+}
+animate();
 </script>
 </body>
 </html>
