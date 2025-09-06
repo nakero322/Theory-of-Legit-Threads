@@ -401,6 +401,110 @@ footer{
 }
 a:focus{ outline:2px dashed rgba(0,0,0,0.08); outline-offset:6px }
 </style>
+<!-- ===== HIGH-FASHION INTRO ===== -->
+<div id="intro">
+  <canvas id="intro-light"></canvas>
+  <div class="intro-logo">TLT</div>
+</div>
+
+<style>
+#intro {
+  position: fixed;
+  inset: 0;
+  background: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  overflow: hidden;
+}
+.intro-logo {
+  font-family: "Playfair Display", serif;
+  font-weight: 900;
+  font-size: 96px;
+  color: #fff;
+  position: relative;
+  z-index: 10;
+  animation: glitch 1s infinite;
+  letter-spacing: 2px;
+}
+@keyframes glitch {
+  0% { text-shadow: 2px 0 #ff0055, -2px 0 #00ffff; }
+  20% { text-shadow: -2px 0 #ff0, 2px 0 #ff0055; }
+  40% { text-shadow: 2px 0 #00ffff, -2px 0 #ff0; }
+  60% { text-shadow: -3px 0 #ff0055, 3px 0 #00ffff; }
+  80% { text-shadow: 2px 0 #ff0, -2px 0 #ff0055; }
+  100% { text-shadow: none; }
+}
+
+/* Laser Stripes */
+.strip {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #ff0055, #00ffff, transparent);
+  opacity: 0.7;
+  top: 0;
+  left: 0;
+  transform: translateY(-50%);
+  animation: stripeMove 1.5s infinite linear;
+}
+.strip:nth-child(2) { animation-delay: 0.3s; }
+.strip:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes stripeMove {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+/* Fade Out Intro */
+#intro.hide {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease;
+}
+
+/* Liquid glow behind logo */
+#intro-light {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+}
+</style>
+
+<script>
+const intro = document.getElementById("intro");
+const canvas = document.getElementById("intro-light");
+const ctx = canvas.getContext("2d");
+function resize(){canvas.width = window.innerWidth; canvas.height = window.innerHeight;}
+resize(); window.addEventListener("resize", resize);
+
+// Liquid glow animation
+let t = 0;
+function draw() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  for(let i=0;i<canvas.width;i+=15){
+    let y = canvas.height/2 + Math.sin(i*0.02 + t*0.03)*40;
+    ctx.fillStyle = `rgba(255,255,255,0.03)`;
+    ctx.fillRect(i, y, 10, canvas.height/2);
+  }
+  t++;
+  requestAnimationFrame(draw);
+}
+draw();
+
+// Laser stripes
+for(let i=0;i<3;i++){
+  const div = document.createElement("div");
+  div.classList.add("strip");
+  intro.appendChild(div);
+}
+
+// Hide intro after 3 seconds
+setTimeout(()=>{
+  intro.classList.add("hide");
+}, 3000);
+</script>
 </head>
 <body>
 <div class="bg-wrap" id="bg"></div>
@@ -592,24 +696,25 @@ window.addEventListener('load', () => {
 </script>
 <canvas id="rain"></canvas>
 <script>
-const canvas = document.getElementById("rain");
-const ctx = canvas.getContext("2d");
+const rainCanvas = document.getElementById("rain");
+const rainCtx = rainCanvas.getContext("2d");
 
-function resize() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+function resizeRain() {
+  rainCanvas.width = window.innerWidth;
+  rainCanvas.height = window.innerHeight;
 }
-resize();
-window.addEventListener("resize", resize);
+resizeRain();
+window.addEventListener("resize", resizeRain);
 
 const RAIN_ANGLE = -0.4;
 const FAST_COUNT = 400;
 const SLOW_COUNT = 150;
+
 class Raindrop {
   constructor() { this.reset(); }
   reset() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * -canvas.height;
+    this.x = Math.random() * rainCanvas.width;
+    this.y = Math.random() * -rainCanvas.height;
     this.len = 15 + Math.random() * 25;
     this.speed = 8 + Math.random() * 12;
     this.opacity = 0.2 + Math.random() * 0.3;
@@ -617,54 +722,56 @@ class Raindrop {
   update() {
     this.x += RAIN_ANGLE * this.speed;
     this.y += this.speed;
-    if (this.y > canvas.height || this.x < 0 || this.x > canvas.width) this.reset();
+    if (this.y > rainCanvas.height || this.x < 0 || this.x > rainCanvas.width) this.reset();
   }
   draw() {
-    ctx.strokeStyle = `rgba(255,255,255,${this.opacity})`;
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(this.x, this.y);
-    ctx.lineTo(this.x - RAIN_ANGLE * this.len, this.y - this.len);
-    ctx.stroke();
+    rainCtx.strokeStyle = `rgba(255,255,255,${this.opacity})`;
+    rainCtx.lineWidth = 1;
+    rainCtx.beginPath();
+    rainCtx.moveTo(this.x, this.y);
+    rainCtx.lineTo(this.x - RAIN_ANGLE * this.len, this.y - this.len);
+    rainCtx.stroke();
   }
 }
+
 class Drop {
   constructor() { this.reset(); }
   reset() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
+    this.x = Math.random() * rainCanvas.width;
+    this.y = Math.random() * rainCanvas.height;
     this.len = 6 + Math.random() * 12;
     this.speed = 1 + Math.random() * 2;
     this.opacity = 0.1 + Math.random() * 0.2;
   }
   update() {
-    this.x += RAIN_ANGLE * this.speed; 
+    this.x += RAIN_ANGLE * this.speed;
     this.y += this.speed;
-    if (this.y > canvas.height || this.x < 0 || this.x > canvas.width) {
+    if (this.y > rainCanvas.height || this.x < 0 || this.x > rainCanvas.width) {
       this.y = 0;
-      this.x = Math.random() * canvas.width;
+      this.x = Math.random() * rainCanvas.width;
     }
   }
   draw() {
-    ctx.strokeStyle = `rgba(255,255,255,${this.opacity})`;
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(this.x, this.y);
-    ctx.lineTo(this.x, this.y + this.len);
-    ctx.stroke();
+    rainCtx.strokeStyle = `rgba(255,255,255,${this.opacity})`;
+    rainCtx.lineWidth = 2;
+    rainCtx.beginPath();
+    rainCtx.moveTo(this.x, this.y);
+    rainCtx.lineTo(this.x, this.y + this.len);
+    rainCtx.stroke();
   }
 }
 
 let dropsFast = Array.from({length: FAST_COUNT}, () => new Raindrop());
 let dropsSlow = Array.from({length: SLOW_COUNT}, () => new Drop());
 
-function animate() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+function animateRain() {
+  rainCtx.clearRect(0, 0, rainCanvas.width, rainCanvas.height);
   dropsFast.forEach(d => { d.update(); d.draw(); });
   dropsSlow.forEach(d => { d.update(); d.draw(); });
-  requestAnimationFrame(animate);
+  requestAnimationFrame(animateRain);
 }
-animate();
+animateRain();
+</script>
 </script>
 </body>
 </html>
