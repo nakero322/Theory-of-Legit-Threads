@@ -1,145 +1,510 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Theory of legit Threads</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;700&display=swap" rel="stylesheet">
-    <style>
-        @font-face {
-            font-family: 'GoudyOldStyleBold';
-            src: url('GoudyOldStyle-Bold.ttf') format('truetype');
-            font-weight: bold;
-        }
-        body { margin: 0; font-family: 'GoudyOldStyleBold', serif; background-color: #fff; color: #000; line-height: 1.6; }
-        a { text-decoration: none; color: inherit; }
-        h1,h2,h3,h4,h5,h6 { font-family: 'Playfair Display', serif; font-weight: 300; }
-        header { padding: 60px 20px 40px; text-align: center; letter-spacing: 2px; }
-        header h1 { font-size: 48px; }
-        nav { display: flex; justify-content: center; gap: 30px; margin-bottom: 60px; }
-        nav a { font-size: 16px; font-weight: bold; padding: 5px 0; position: relative; }
-        nav a::after { content: ''; display: block; width: 0; height: 2px; background: #000; transition: width 0.3s; position: absolute; bottom: -5px; left: 0; }
-        nav a:hover::after { width: 100%; }
-        main { max-width: 1000px; margin: 0 auto; padding: 0 20px 80px; }
-        section { margin-bottom: 80px; }
-        h2 { font-size: 32px; border-bottom: 1px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
-        p { font-size: 16px; font-weight: bold; }
-        .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; justify-items: center; }
-        .gallery-item { width: 250px; border: 1px solid #ccc; border-radius: 8px; overflow: hidden; text-align: center; font-family: 'GoudyOldStyleBold', serif; font-weight: bold; }
-        .gallery-item img.main { width: 100%; min-height: 250px; height: auto; object-fit: cover; display: block; background-color: #f8f8f8; }
-        .gallery-item .desc { padding: 8px; background-color: #f8f8f8; }
-        .gallery-item .thumbs { display: flex; justify-content: center; gap: 10px; margin: 10px 0; }
-        .gallery-item .thumb-item { text-align: center; }
-        .gallery-item .thumb-item img { width: 60px; height: 60px; object-fit: cover; cursor: pointer; border: 2px solid transparent; border-radius: 6px; transition: 0.3s; }
-        .gallery-item .thumb-item img.active { border-color: black; }
-        .gallery-item .thumb-item .label { font-size: 12px; margin-top: 3px; font-weight: bold; }
-        footer { text-align: center; padding: 40px 20px; font-size: 14px; border-top: 1px solid #000; letter-spacing: 1px; font-weight: bold; }
-    </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Theory of Legit Threads — Brutal Luxury</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff;
+  --fg:#0a0a0a;
+  --muted:#9b9b9b;
+  --accent:#000000;
+  --glass: rgba(255,255,255,0.6);
+  --max-width:1200px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color:var(--fg);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+}
+.bg-wrap {
+  position: absolute; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200vh; 
+  z-index: -10;
+  pointer-events: none;
+  background:
+    url('https://i.pinimg.com/736x/35/3d/19/353d1909ff6ea0a5ff6cbd2f2c06ea21.jpg') center center / cover no-repeat,
+    radial-gradient(1200px 600px at 10% 10%, rgba(255,255,255,0.02), transparent 12%),
+    radial-gradient(800px 500px at 90% 80%, rgba(255,255,255,0.02), transparent 10%),
+    linear-gradient(180deg, #111,#222);
+  background-blend-mode: overlay;
+  transform: translate3d(0,0,0);
+  transition: transform 0.15s linear;
+}
+header{
+  padding:36px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:24px;
+  position:relative;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  max-width:var(--max-width);
+  width:100%;
+  margin:0 auto;
+}
+.logo {
+  width:64px;
+  height:64px;
+  border-radius:8px;
+  background:var(--fg);
+  display:inline-grid;
+  place-items:center;
+  color:var(--bg);
+  font-family:"Playfair Display";
+  font-weight:700;
+  font-size:20px;
+  box-shadow:0 8px 30px rgba(10,10,10,0.08);
+}
+.site-title{
+  display:flex;
+  flex-direction:column;
+  line-height:1;
+}
+.site-title .label{
+  font-family:"Playfair Display";
+  font-weight:900;
+  letter-spacing:2px;
+  font-size:20px;
+  color:var(--fg);
+}
+.site-title .sub{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:4px;
+  text-transform:uppercase;
+  letter-spacing:3px;
+}
+nav.top-nav{
+  position:sticky;
+  top:0;
+  margin-top:12px;
+  display:flex;
+  justify-content:center;
+  background:rgba(255,255,255,0.88);
+  backdrop-filter: blur(6px);
+  border-bottom:1px solid rgba(0,0,0,0.03);
+  z-index:40;
+}
+.nav-inner{
+  max-width:var(--max-width);
+  width:100%;
+  padding:10px 20px;
+  display:flex;
+  gap:28px;
+  justify-content:center;
+}
+.nav-link{
+  font-weight:600;
+  font-size:13px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--fg);
+  opacity:0.9;
+  position:relative;
+}
+.nav-link::after{
+  content:"";
+  position:absolute;
+  left:0; bottom:-6px;
+  width:0;
+  height:2px;
+  background:var(--accent);
+  transition:width .28s cubic-bezier(.2,.8,.2,1);
+}
+.nav-link:hover::after{width:100%}
+.nav-link:focus{outline:2px solid rgba(0,0,0,0.06); outline-offset:4px}
+main{
+  max-width:var(--max-width);
+  margin:48px auto;
+  padding:0 20px 120px;
+}
+.hero{
+  display:grid;
+  grid-template-columns: 1fr 420px;
+  gap:48px;
+  align-items:center;
+  margin-bottom:64px;
+  min-height:320px;
+}
+.hero-left{ padding-right:10px; }
+.eyebrow{
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:3px;
+  color:var(--muted);
+  margin-bottom:18px;
+  font-weight:600;
+}
+.hero-title{
+  font-family:"Playfair Display";
+  font-weight:900;
+  font-size:72px;
+  line-height:0.88;
+  letter-spacing:-2px;
+  margin:0 0 18px 0;
+  color:var(--fg);
+  overflow:hidden;
+}
+.hero-sub{
+  font-size:16px;
+  color:var(--muted);
+  max-width:60ch;
+  font-weight:500;
+}
+.hero-right{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  align-items:flex-start;
+  justify-content:center;
+}
+.stat{
+  background:transparent;
+  border-left:3px solid var(--fg);
+  padding:12px 18px;
+  width:100%;
+}
+.stat h3{ margin:0; font-family:"Playfair Display"; font-weight:700; font-size:18px; letter-spacing:1px}
+.stat p{ margin:6px 0 0; color:var(--muted); font-size:13px }
+section.block{
+  display:block;
+  margin-bottom:64px;
+  opacity:0;
+  transform:translateY(30px);
+  transition: all .9s cubic-bezier(.2,.9,.2,1);
+}
+section.block.visible{opacity:1; transform:translateY(0)}
+section.block h2{
+  font-family:"Playfair Display";
+  font-weight:700;
+  font-size:30px;
+  letter-spacing:1px;
+  margin-bottom:18px;
+}
+.text-strong{font-weight:700; color:var(--fg); font-size:15px}
+.lookbook{
+  display:grid;
+  grid-template-columns: repeat(3,1fr);
+  gap:26px;
+}
+.tile{
+  position:relative;
+  overflow:hidden;
+  border-radius:10px;
+  background:#fff;
+  cursor:zoom-in;
+  height:420px;
+  display:flex;
+  align-items:flex-end;
+  box-shadow: 0 18px 40px rgba(10,10,10,0.06);
+  transition: transform .6s cubic-bezier(.2,.9,.2,1), box-shadow .4s;
+}
+.tile img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transform:scale(1);
+  transition: transform .9s cubic-bezier(.2,.9,.2,1), filter .6s;
+  will-change:transform;
+}
+.tile::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg, rgba(0,0,0,0.0) 40%, rgba(0,0,0,0.42) 100%);
+  opacity:0.9;
+  transition:opacity .6s;
+}
+.tile .meta{
+  position:relative;
+  padding:22px;
+  color:#fff;
+  z-index:2;
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+.tile .meta .desc{ font-family:"Playfair Display"; font-weight:700; font-size:16px; letter-spacing:0.5px }
+.tile .meta .price{ font-size:14px; color:rgba(255,255,255,0.9); font-weight:600 }
+.tile:hover{ transform:translateY(-10px) scale(1.01); box-shadow: 0 30px 60px rgba(10,10,10,0.12)}
+.tile:hover img{ transform:scale(1.12) rotate(-1deg); filter:contrast(1.03) saturate(1.02) }
+.tile .arrow{
+  position:absolute;
+  top:50%;
+  right:12px;
+  transform:translateY(-50%);
+  width:40px;
+  height:40px;
+  background:rgba(0,0,0,0.6);
+  color:#fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:20px;
+  cursor:pointer;
+  border-radius:50%;
+  z-index:5;
+}
+@media (max-width:1024px){
+  .hero{ grid-template-columns: 1fr; gap:28px }
+  .lookbook{ grid-template-columns: repeat(2,1fr) }
+  .tile{ height:360px }
+  .hero-title{ font-size:54px }
+}
+@media (max-width:640px){
+  .lookbook{ grid-template-columns: 1fr }
+  .tile{ height:320px }
+  .hero-title{ font-size:36px }
+  .brand{ gap:12px }
+  .logo{ width:48px; height:48px }
+}
+footer{
+  margin-top:60px;
+  padding:40px 20px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+}
+.lightbox{
+  position:fixed;
+  inset:0;
+  background:rgba(4,4,4,0.86);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:200;
+  padding:24px;
+}
+.lightbox.show{display:flex}
+.lightbox img{
+  max-width:90%;
+  max-height:85%;
+  object-fit:contain;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6)
+}
+.cursor {
+  width:26px;
+  height:26px;
+  border-radius:50%;
+  border:1.4px solid rgba(0,0,0,0.9);
+  position:fixed;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+  mix-blend-mode: difference;
+  z-index:9999;
+  transition: transform .12s ease, width .18s ease, height .18s ease, background .12s ease, border-color .12s;
+  display:block;
+  background:transparent;
+}
+.cursor.active{
+  width:76px;
+  height:76px;
+  border-width:1px;
+  background:rgba(0,0,0,0.06);
+  transform:translate(-50%,-50%) scale(1);
+}
+a:focus{ outline:2px dashed rgba(0,0,0,0.08); outline-offset:6px }
+</style>
 </head>
 <body>
-    <header style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 60px 20px 40px;">
-  <img src="https://i.imgur.com/veindyv.jpeg" alt="Icon" style="width:50px; height:50px; border-radius:50%;">
-  <h1>Theory of legit Threads</h1>
+<div class="bg-wrap" id="bg"></div>
+<div class="cursor" id="cursor"></div>
+
+<header>
+<div class="brand" role="banner">
+  <div class="logo" aria-hidden="true">TLT</div>
+  <div class="site-title" aria-hidden="false">
+    <div class="label">Theory of Legit Threads</div>
+    <div class="sub">Resale — Editorial — Crafted</div>
+  </div>
+</div>
 </header>
-    <nav>
-        <a href="#bio">Biography</a>
-        <a href="#quality">Quality</a>
-        <a href="#gallery">Gallery</a>
-        <a href="#shipping">Shipping</a>
-        <a href="#contact">Contact</a>
-    </nav>
-    <main>
-        <section id="bio">
-            <h2>Biography</h2>
-            <p>Theory of Legit Threads is more than a name — it’s a movement.
-Born out of passion for fashion’s finest details, we focus on curating and reselling the most iconic pieces from the world of high-end luxury. From rare drops and limited releases to timeless classics and vintage gems, every item tells a story of quality, culture, and individuality.
-We don’t just resell luxury — we redefine it. 
-Our philosophy is simple: real style doesn’t expire. True luxury is built to last, to evolve with you, and to carry meaning beyond a season. That’s why Theory of Legit Threads exists — to give these pieces a second life and connect them with those who can truly appreciate them.</p>
-        </section>
-        <section id="quality">
-            <h2>Quality</h2>
-            <p>This is insane quality.
-Every fabric, every cut, every stitch represents craftsmanship at its peak. We make it possible for people to access luxury not as a distant dream, but as part of their lifestyle.
 
-Theory of Legit Threads is a community.
-We’re for the ones who see fashion not just as clothing, but as language, as energy, as identity.It’s not about logos — it’s about presence, confidence, and authenticity. The quality is identical to the original 1 to 1, because we care about the details that matter.
+<nav class="top-nav" aria-label="Main navigation">
+<div class="nav-inner">
+  <a class="nav-link" href="#bio">Biography</a>
+  <a class="nav-link" href="#quality">Quality</a>
+  <a class="nav-link" href="#gallery">Lookbook</a>
+  <a class="nav-link" href="#shipping">Shipping</a>
+  <a class="nav-link" href="#contact">Contact</a>
+</div>
+</nav>
+
+<main>
+<section class="hero" aria-labelledby="hero-title">
+<div class="hero-left">
+  <div class="eyebrow">Editorial Drop — 2025</div>
+  <h1 id="hero-title" class="hero-title" aria-hidden="false">
+    <span id="hero-animated">Luxury is a language — we speak it loud.</span>
+  </h1>
+  <p class="hero-sub">We curate the rare, the iconic and the timeless. Clean lines, heavy presence — pieces that age like statements. No logos. Just weight.</p>
+</div>
+<aside class="hero-right" aria-label="Key facts">
+  <div class="stat">
+    <h3>Handpicked</h3>
+    <p>Each item verified for detail and provenance.</p>
+  </div>
+  <div class="stat">
+    <h3>Limited</h3>
+    <p>Small batches, rare finds — continuous drops.</p>
+  </div>
+  <div class="stat">
+    <h3>Discreet</h3>
+    <p>Private shipping and tracked delivery inside Germany.</p>
+  </div>
+</aside>
+</section>
+
+<section id="bio" class="block">
+<h2>Biography</h2>
+<p class="text-strong">Theory of Legit Threads — a quiet obsession with quality and story. We give rare garments a second life without compromise.</p>
+<p style="margin-top:12px;color:var(--muted);max-width:70ch">Born from a desire to bridge heritage and modernity. We source pieces that carry weight — cuts, fabrics and small markers of craftsmanship that tell you everything without shouting.</p>
+</section>
+
+<section id="quality" class="block">
+<h2>Quality</h2>
+<p class="text-strong">We verify by touch, not by label. If it doesn't pass the stitch, the seam, the drape — we don't sell it.</p>
+<p style="margin-top:12px;color:var(--muted);max-width:70ch">Repairs, restorations and honest descriptions. Transparency over hype.</p>
+</section>
+
+<section id="gallery" class="block" aria-label="Lookbook">
+<h2>Lookbook</h2>
+<div class="lookbook" id="lookbook-grid">
+<div class="tile" data-variants='["https://www.mytheresa.com/media/1094/1238/100/6f/P00707595.jpg","https://image.goat.com/transform/v1/attachments/product_template_pictures/images/097/962/738/original/RU01D3868_LCO_1111.png.png?action=crop&width=750"]' tabindex="0" role="button" aria-pressed="false">
+<img src="https://www.mytheresa.com/media/1094/1238/100/6f/P00707595.jpg" alt="Rick Owens Geobasket">
+<div class="meta"><div class="desc">Rick Owens Geobasket</div><div class="price">€80</div></div><div class="arrow">&#8594;</div>
+</div>
+<div class="tile" data-variants='["https://ae-pic-a1.aliexpress-media.com/kf/S4b3b44bab46c45b88cf68d0ecfe44da3a.jpg_640x640q75.jpg_.avif","https://ae-pic-a1.aliexpress-media.com/kf/Sbdeee13ef6644847b078283ddc254c1ek.jpg_640x640q75.jpg_.avif"]' tabindex="0" role="button" aria-pressed="false">
+<img src="https://ae-pic-a1.aliexpress-media.com/kf/S4b3b44bab46c45b88cf68d0ecfe44da3a.jpg_640x640q75.jpg_.avif" alt="Aphex Twin sweatshirt">
+<div class="meta"><div class="desc">Aphex Twin sweatshirt</div><div class="price">€45</div></div><div class="arrow">&#8594;</div>
+</div>
+<div class="tile" data-src="https://www.mytheresa.com/media/1094/1238/100/02/P00941989.jpg" tabindex="0" role="button" aria-pressed="false">
+<img src="https://www.mytheresa.com/media/1094/1238/100/02/P00941989.jpg" alt="Acne Studios">
+<div class="meta"><div class="desc">Acne Studios</div><div class="price">€40</div></div>
+</div>
+<div class="tile" data-src="https://studioslow.ru/upload/resize_cache/iblock/3ff/555_755_2/8zgwtqnkpa489d84vrvehnzh0bqwgbu5.webp" tabindex="0" role="button" aria-pressed="false">
+<img src="https://studioslow.ru/upload/resize_cache/iblock/3ff/555_755_2/8zgwtqnkpa489d84vrvehnzh0bqwgbu5.webp" alt="1017 Alyx 9SM">
+<div class="meta"><div class="desc">1017 Alyx 9SM</div><div class="price">€30</div></div>
+</div>
+<div class="tile" data-src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkcNU4uKIrIPomw7-twqk_14fRjtsr7LscoA&s" tabindex="0" role="button" aria-pressed="false">
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkcNU4uKIrIPomw7-twqk_14fRjtsr7LscoA&s" alt="TlT Solrim AkPants">
+<div class="meta"><div class="desc">TlT Solrim AkPants</div><div class="price">€45</div></div>
+</div>
+<div class="tile" data-src="https://i.imgur.com/veindyv.jpeg" tabindex="0" role="button" aria-pressed="false">
+<img src="https://i.imgur.com/veindyv.jpeg" alt="Editorial detail">
+<div class="meta"><div class="desc">Detail drop</div><div class="price">—</div></div>
+</div>
+</div>
+</section>
+
+<section id="shipping" class="block">
+<h2>Shipping</h2>
+<p class="text-strong">Currently delivery only in Germany. 1 item €9.99 · 2 items €4.99 · 3+ items €0.00 — 3–7 business days tracked.</p>
+<p style="margin-top:10px;color:var(--muted)">Discreet packaging, insured for high-value items. Contact for private handling.</p>
+</section>
+
+<section id="contact" class="block">
+<h2>Contact</h2>
+<p class="text-strong">Email — <a href="mailto:Theory.of.legit.threads@gmail.com">Theory.of.legit.threads@gmail.com</a></p>
+<p style="margin-top:8px;color:var(--muted)">
+  Instagram — <a href="https://www.instagram.com/theory_of_legit_threads/" target="_blank" rel="noopener noreferrer" aria-label="Instagram profile">theory_of_legit_threads</a>
 </p>
-        </section>
-       <section id="gallery">
-    <h2>Gallery</h2>
-    <div class="gallery">
-        <div class="gallery-item">
-            <img class="main" src="https://www.mytheresa.com/media/1094/1238/100/6f/P00707595.jpg" alt="Rick Owens Geobasket- 80 euro">
-            <div class="desc">Rick Owens Geobasket - 80 euro</div>
-            <div class="thumbs">
-                <div class="thumb-item">
-                    <img src="https://www.mytheresa.com/media/1094/1238/100/6f/P00707595.jpg" class="active">
-                    <div class="label">Black</div>
-                </div>
-                <div class="thumb-item">
-                    <img src="https://image.goat.com/transform/v1/attachments/product_template_pictures/images/097/962/738/original/RU01D3868_LCO_1111.png.png?action=crop&width=750">
-                    <div class="label">White</div>
-                </div>
-            </div>
-        </div>
-        <div class="gallery-item">
-            <img class="main" src="https://ae-pic-a1.aliexpress-media.com/kf/S4b3b44bab46c45b88cf68d0ecfe44da3a.jpg_640x640q75.jpg_.avif" alt="Aphex Twin sweatshirt- 45 euro">
-            <div class="desc">Aphex Twin sweatshirt - 45 euro</div>
-            <div class="thumbs">
-                <div class="thumb-item">
-                    <img src="https://ae-pic-a1.aliexpress-media.com/kf/S4b3b44bab46c45b88cf68d0ecfe44da3a.jpg_640x640q75.jpg_.avif" class="active">
-                    <div class="label">Black</div>
-                </div>
-                <div class="thumb-item">
-                    <img src="https://ae-pic-a1.aliexpress-media.com/kf/Sbdeee13ef6644847b078283ddc254c1ek.jpg_640x640q75.jpg_.avif">
-                    <div class="label">White</div>
-                </div>
-            </div>
-        </div>
-        <div class="gallery-item">
-            <img class="main" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkcNU4uKIrIPomw7-twqk_14fRjtsr7LscoA&s" alt="ERD sweatshirt-70 euro">
-            <div class="desc">TlT Solrim AkPants - 45 euro</div>
-        </div>
-       <div class="gallery-item">
-            <img class="main" src="https://www.mytheresa.com/media/1094/1238/100/02/P00941989.jpg" alt="ERD sweatshirt-70 euro">
-            <div class="desc">Acne Studios - 40 euro</div>
-        </div> 
-        <div class="gallery-item">
-            <img class="main" src="https://studioslow.ru/upload/resize_cache/iblock/3ff/555_755_2/8zgwtqnkpa489d84vrvehnzh0bqwgbu5.webp" alt="ERD sweatshirt-70 euro">
-            <div class="desc">1017 Alyx 9SM - 30 euro</div>
-        </div> 
 </section>
-<section id="shipping">
-    <h2>Shipping</h2>
-    <p>Unfortunately at the moment delivery is only in Germany, 1 item - 9.99 euros, 2 items - 4.99 euros, 3 or more items - 0.00 euros. Delivery- 3-7 days.</p>
-</section>
-
-<section id="contact">
-    <h2>Contact</h2>
-    <p>Email: <a href="mailto:Theory.of.legit.threads@gmail.com">Theory.of.legit.threads@gmail.com</a></p>
-    <p>Instagram: <a href="#">theory_of_legit_threads</a></p>
-     <p>TGK: <a href="#">theory_of_legit_threads</a></p>
-</section>
-</main>
 
 <footer>
-    &copy; 2025 Theory of legit Threads by Nakero
+&copy; 2025 Theory of Legit Threads — Nakero. All rights reserved.
 </footer>
+</main>
+
+<div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Image viewer">
+<img id="lightbox-img" src="" alt="Enlarged" />
+</div>
 
 <script>
-    const galleryItems = document.querySelectorAll('.gallery-item');
-    galleryItems.forEach(item => {
-        const mainImg = item.querySelector('img.main');
-        const thumbs = item.querySelectorAll('.thumb-item img');
+const cursor = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+});
+['a','button','.tile','.nav-link'].forEach(el => {
+  document.querySelectorAll(el).forEach(node => {
+    node.addEventListener('mouseenter', ()=>cursor.classList.add('active'));
+    node.addEventListener('mouseleave', ()=>cursor.classList.remove('active'));
+  });
+});
+if(('ontouchstart' in window)||navigator.maxTouchPoints>0){cursor.style.display='none';}
 
-        thumbs.forEach(thumb => {
-            thumb.addEventListener('click', () => {
-                mainImg.src = thumb.src;
-                thumbs.forEach(t => t.classList.remove('active'));
-                thumb.classList.add('active');
-            });
-        });
+const bg = document.getElementById('bg');
+window.addEventListener('scroll', () => {
+  const offset = window.scrollY * 0.25; 
+  bg.style.transform = `translate3d(0, ${offset}px, 0)`;
+}, { passive: true });
+
+const blocks = document.querySelectorAll('section.block, .hero');
+const reveal = ()=>{ const trigger = window.innerHeight*0.85; blocks.forEach(b=>{if(b.getBoundingClientRect().top<trigger)b.classList.add('visible')}); };
+window.addEventListener('scroll',reveal,{passive:true});
+reveal();
+
+(function animateHero(){
+  const el=document.getElementById('hero-animated');
+  const text=el.textContent.trim();
+  el.textContent='';
+  text.split('').forEach((ch,i)=>{
+    const span=document.createElement('span');
+    span.textContent=ch;
+    span.style.opacity=0;
+    span.style.display='inline-block';
+    span.style.transform='translateY(8px)';
+    span.style.transition='all 400ms cubic-bezier(.2,.9,.2,1)';
+    el.appendChild(span);
+    setTimeout(()=>{span.style.opacity=1; span.style.transform='translateY(0)';}, i*28);
+  });
+})();
+
+const tiles = document.querySelectorAll('.tile');
+const lightbox = document.getElementById('lightbox');
+const lbImg = document.getElementById('lightbox-img');
+tiles.forEach(tile=>{
+  const src = tile.dataset.src || tile.querySelector('img').src;
+  tile.addEventListener('click', ()=>openLightbox(src));
+  tile.addEventListener('keydown',(e)=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openLightbox(src)}});
+  const arrow = tile.querySelector('.arrow');
+  const variants = tile.dataset.variants?JSON.parse(tile.dataset.variants):null;
+  if(arrow && variants){
+    let idx=0;
+    arrow.addEventListener('click',e=>{
+      e.stopPropagation();
+      idx=(idx+1)%variants.length;
+      tile.querySelector('img').src=variants[idx];
     });
+  }
+});
+function openLightbox(src){lbImg.src=src;lightbox.classList.add('show');lightbox.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
+function closeLightbox(){lightbox.classList.remove('show');lightbox.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+lightbox.addEventListener('click', e=>{if(e.target!==lbImg)closeLightbox();});
+document.addEventListener('keydown', e=>{if(e.key==='Escape')closeLightbox();});
+
+document.querySelectorAll('img').forEach(img=>{if(!img.hasAttribute('loading'))img.setAttribute('loading','lazy');});
+if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.querySelectorAll('*').forEach(n=>n.style.transitionDuration&& (n.style.transitionDuration='0.01ms'));}
 </script>
 </body>
 </html>
