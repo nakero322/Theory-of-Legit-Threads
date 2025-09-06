@@ -11,110 +11,36 @@
             src: url('GoudyOldStyle-Bold.ttf') format('truetype');
             font-weight: bold;
         }
-        body {
-            margin: 0;
-            font-family: 'GoudyOldStyleBold', serif;
-            background-color: #fff;
-            color: #000;
-            line-height: 1.6;
-        }
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Playfair Display', serif;
-            font-weight: 300; 
-        }
-        header {
-            padding: 60px 20px 40px;
-            text-align: center;
-            letter-spacing: 2px;
-        }
-        header h1 {
-            font-size: 48px;
-        }
-        nav {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 60px;
-        }
-        nav a {
-            font-size: 16px;
-            font-weight: bold;
-            padding: 5px 0;
-            position: relative;
-        }
-        nav a::after {
-            content: '';
-            display: block;
-            width: 0;
-            height: 2px;
-            background: #000;
-            transition: width 0.3s;
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-        }
-        nav a:hover::after {
-            width: 100%;
-        }
-        main {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 20px 80px;
-        }
-        section {
-            margin-bottom: 80px;
-        }
-        h2 {
-            font-size: 32px;
-            border-bottom: 1px solid #000;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-        p {
-            font-size: 16px;
-            font-weight: bold; 
-        }
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        .gallery-item {
-            width: 200px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            overflow: hidden;
-            text-align: center;
-            font-family: 'GoudyOldStyleBold', serif;
-            font-weight: bold; 
-        }
-        .gallery-item img {
-            width: 100%;
-            display: block;
-            object-fit: cover;
-        }
-        .gallery-item div {
-            padding: 8px;
-            background-color: #f8f8f8;
-        }
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            font-size: 14px;
-            border-top: 1px solid #000;
-            letter-spacing: 1px;
-            font-weight: bold;
-        }
+        body { margin: 0; font-family: 'GoudyOldStyleBold', serif; background-color: #fff; color: #000; line-height: 1.6; }
+        a { text-decoration: none; color: inherit; }
+        h1,h2,h3,h4,h5,h6 { font-family: 'Playfair Display', serif; font-weight: 300; }
+        header { padding: 60px 20px 40px; text-align: center; letter-spacing: 2px; }
+        header h1 { font-size: 48px; }
+        nav { display: flex; justify-content: center; gap: 30px; margin-bottom: 60px; }
+        nav a { font-size: 16px; font-weight: bold; padding: 5px 0; position: relative; }
+        nav a::after { content: ''; display: block; width: 0; height: 2px; background: #000; transition: width 0.3s; position: absolute; bottom: -5px; left: 0; }
+        nav a:hover::after { width: 100%; }
+        main { max-width: 1000px; margin: 0 auto; padding: 0 20px 80px; }
+        section { margin-bottom: 80px; }
+        h2 { font-size: 32px; border-bottom: 1px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
+        p { font-size: 16px; font-weight: bold; }
+        .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; justify-items: center; }
+        .gallery-item { width: 250px; border: 1px solid #ccc; border-radius: 8px; overflow: hidden; text-align: center; font-family: 'GoudyOldStyleBold', serif; font-weight: bold; }
+        .gallery-item img.main { width: 100%; min-height: 250px; height: auto; object-fit: cover; display: block; background-color: #f8f8f8; }
+        .gallery-item .desc { padding: 8px; background-color: #f8f8f8; }
+        .gallery-item .thumbs { display: flex; justify-content: center; gap: 10px; margin: 10px 0; }
+        .gallery-item .thumb-item { text-align: center; }
+        .gallery-item .thumb-item img { width: 60px; height: 60px; object-fit: cover; cursor: pointer; border: 2px solid transparent; border-radius: 6px; transition: 0.3s; }
+        .gallery-item .thumb-item img.active { border-color: black; }
+        .gallery-item .thumb-item .label { font-size: 12px; margin-top: 3px; font-weight: bold; }
+        footer { text-align: center; padding: 40px 20px; font-size: 14px; border-top: 1px solid #000; letter-spacing: 1px; font-weight: bold; }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Theory of legit Threads</h1>
-    </header>
+    <header style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 60px 20px 40px;">
+  <img src="https://i.imgur.com/veindyv.jpeg" alt="Icon" style="width:50px; height:50px; border-radius:50%;">
+  <h1>Theory of legit Threads</h1>
+</header>
     <nav>
         <a href="#bio">Biography</a>
         <a href="#quality">Quality</a>
@@ -139,47 +65,80 @@ Theory of Legit Threads is a community.
 We’re for the ones who see fashion not just as clothing, but as language, as energy, as identity.It’s not about logos — it’s about presence, confidence, and authenticity. The quality is identical to the original 1 to 1, because we care about the details that matter.
 </p>
         </section>
-        <section id="gallery">
-            <h2>Gallery</h2>
-            <div class="gallery">
-                <div class="gallery-item">
-                    <img src="https://i5.walmartimages.com/asr/c3ae5062-1e80-4cbb-aae2-07b736657ff7.65003c9d991b826e5a840ce7842eda86.webp?odnHeight=612&odnWidth=612&odnBg=FFFFFF" alt="ERD sweatshirt-70 euro">
-                    <div>ERD sweatshirt - 70 euro</div>
+       <section id="gallery">
+    <h2>Gallery</h2>
+    <div class="gallery">
+        <div class="gallery-item">
+            <img class="main" src="https://www.mytheresa.com/media/1094/1238/100/6f/P00707595.jpg" alt="Rick Owens Geobasket- 80 euro">
+            <div class="desc">Rick Owens Geobasket - 80 euro</div>
+            <div class="thumbs">
+                <div class="thumb-item">
+                    <img src="https://www.mytheresa.com/media/1094/1238/100/6f/P00707595.jpg" class="active">
+                    <div class="label">Black</div>
                 </div>
-                <div class="gallery-item">
-                    <img src="https://www.hypeneedz.com/cdn/shop/files/HellstarClassicTshirtGelPrintBlackPink_700x.jpg?v=1741795642" alt="Hellstar Classic T-shirt (gel Print) Black/pink- 70 euro">
-                    <div>Hellstar Classic T-shirt (gel Print) Black/pink- 70 euro</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="https://www.hypeneedz.com/cdn/shop/files/HellstarClassicGlitterLogoTshirtBlack_700x.jpg?v=1741795797" alt="Hellstar Glitter Logo T-shirt Black- 75 euro">
-                    <div>Hellstar Glitter Logo T-shirt Black- 75 euro</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="https://www.ekseption.com/cdn/shop/files/336679-1.jpg?v=1754040106&width=713" alt="Acne Studios Jersey polo de lana de yak para hombre- 80 euro">
-                    <div>Acne Studios Jersey polo de lana de yak para hombre- 80 euro</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="https://image1.lacoste.com/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-DE-Site/Sites-master/de/dwb9648b21/NH4578LX_H45_24.jpg?imwidth=1920&impolicy=zoom" alt="Lacoste Bag- 60 euro">
-                    <div>Lacoste Bag- 60 euro</div>
+                <div class="thumb-item">
+                    <img src="https://image.goat.com/transform/v1/attachments/product_template_pictures/images/097/962/738/original/RU01D3868_LCO_1111.png.png?action=crop&width=750">
+                    <div class="label">White</div>
                 </div>
             </div>
-             <div class="gallery-item">
-                    <img src="https://img.alicdn.com/bao/uploaded/i3/409187313/O1CN01hQOevv23tPOLhwI1C_!!409187313.jpg_400x400q90.jpg" alt="Hellstar sweatshirt Black- 80 euro">
-                    <div>Hellstar sweatshirt Black- 80 euro</div>
+        </div>
+        <div class="gallery-item">
+            <img class="main" src="https://ae-pic-a1.aliexpress-media.com/kf/S4b3b44bab46c45b88cf68d0ecfe44da3a.jpg_640x640q75.jpg_.avif" alt="Aphex Twin sweatshirt- 45 euro">
+            <div class="desc">Aphex Twin sweatshirt - 45 euro</div>
+            <div class="thumbs">
+                <div class="thumb-item">
+                    <img src="https://ae-pic-a1.aliexpress-media.com/kf/S4b3b44bab46c45b88cf68d0ecfe44da3a.jpg_640x640q75.jpg_.avif" class="active">
+                    <div class="label">Black</div>
                 </div>
-           
-        <section id="shipping">
-            <h2>Shipping</h2>
-            <p>Unfortunately at the moment delivery is only in Germany, 1 item - 9.99 euros, 2 items - 4.99 euros, 3 or more items - 0.00 euros. Delivery- 3-7 days.</p>
-        </section>
-        <section id="contact">
-            <h2>Contact</h2>
-            <p>Email: <a href="mailto:Theory.of.legit.threads@gmail.com">Theory.of.legit.threads@gmail.com</a></p>
-            <p>Instagram: <a href="#">theory_of_legit_threads</a></p>
-        </section>
-    </main>
-    <footer>
-        &copy; 2025 Theory of legit Threads
-    </footer>
+                <div class="thumb-item">
+                    <img src="https://ae-pic-a1.aliexpress-media.com/kf/Sbdeee13ef6644847b078283ddc254c1ek.jpg_640x640q75.jpg_.avif">
+                    <div class="label">White</div>
+                </div>
+            </div>
+        </div>
+        <div class="gallery-item">
+            <img class="main" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkcNU4uKIrIPomw7-twqk_14fRjtsr7LscoA&s" alt="ERD sweatshirt-70 euro">
+            <div class="desc">TlT Solrim AkPants - 45 euro</div>
+        </div>
+       <div class="gallery-item">
+            <img class="main" src="https://www.mytheresa.com/media/1094/1238/100/02/P00941989.jpg" alt="ERD sweatshirt-70 euro">
+            <div class="desc">Acne Studios - 40 euro</div>
+        </div> 
+        <div class="gallery-item">
+            <img class="main" src="https://studioslow.ru/upload/resize_cache/iblock/3ff/555_755_2/8zgwtqnkpa489d84vrvehnzh0bqwgbu5.webp" alt="ERD sweatshirt-70 euro">
+            <div class="desc">1017 Alyx 9SM - 30 euro</div>
+        </div> 
+</section>
+<section id="shipping">
+    <h2>Shipping</h2>
+    <p>Unfortunately at the moment delivery is only in Germany, 1 item - 9.99 euros, 2 items - 4.99 euros, 3 or more items - 0.00 euros. Delivery- 3-7 days.</p>
+</section>
+
+<section id="contact">
+    <h2>Contact</h2>
+    <p>Email: <a href="mailto:Theory.of.legit.threads@gmail.com">Theory.of.legit.threads@gmail.com</a></p>
+    <p>Instagram: <a href="#">theory_of_legit_threads</a></p>
+</section>
+</main>
+
+<footer>
+    &copy; 2025 Theory of legit Threads by Nakero
+</footer>
+
+<script>
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    galleryItems.forEach(item => {
+        const mainImg = item.querySelector('img.main');
+        const thumbs = item.querySelectorAll('.thumb-item img');
+
+        thumbs.forEach(thumb => {
+            thumb.addEventListener('click', () => {
+                mainImg.src = thumb.src;
+                thumbs.forEach(t => t.classList.remove('active'));
+                thumb.classList.add('active');
+            });
+        });
+    });
+</script>
 </body>
 </html>
