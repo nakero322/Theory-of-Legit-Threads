@@ -34,8 +34,6 @@
   80% { text-shadow: 2px 0 #ff0, -2px 0 #ff0055; }
   100% { text-shadow: none; }
 }
-
-/* Laser Stripes */
 .strip {
   position: absolute;
   width: 100%;
@@ -54,15 +52,11 @@
   0% { transform: translateY(-100%); }
   100% { transform: translateY(100%); }
 }
-
-/* Fade Out Intro */
 #intro.hide {
   opacity: 0;
   pointer-events: none;
   transition: opacity 1s ease;
 }
-
-/* Liquid glow behind logo */
 #intro-light {
   position: absolute;
   inset: 0;
@@ -462,8 +456,6 @@ footer{
   transform:translate(-50%,-50%) scale(1);
 }
 a:focus{ outline:2px dashed rgba(0,0,0,0.08); outline-offset:6px }
-
-/* ===== CART STYLES ===== */
 .cart-icon {
   position: fixed;
   top: 30px;
@@ -661,8 +653,6 @@ a:focus{ outline:2px dashed rgba(0,0,0,0.08); outline-offset:6px }
   padding: 40px 0;
   color: var(--muted);
 }
-
-/* Size Selector Modal */
 .size-modal {
   position: fixed;
   top: 0;
@@ -730,8 +720,6 @@ a:focus{ outline:2px dashed rgba(0,0,0,0.08); outline-offset:6px }
   font-weight: 600;
   letter-spacing: 1px;
 }
-
-/* Add to cart button on products */
 .add-cart-btn {
   position: absolute;
   bottom: 20px;
@@ -749,8 +737,6 @@ a:focus{ outline:2px dashed rgba(0,0,0,0.08); outline-offset:6px }
 .tile:hover .add-cart-btn {
   opacity: 1;
 }
-
-/* Cart item animation */
 @keyframes slideIn {
   from { opacity: 0; transform: translateX(20px); }
   to { opacity: 1; transform: translateX(0); }
@@ -768,17 +754,11 @@ a:focus{ outline:2px dashed rgba(0,0,0,0.08); outline-offset:6px }
 </div>
 <div class="bg-wrap" id="bg"></div>
 <div class="cursor" id="cursor"></div>
-
-<!-- Cart Icon -->
 <div class="cart-icon" id="cartIcon">
   <span>🛒</span>
   <span class="cart-count" id="cartCount">0</span>
 </div>
-
-<!-- Cart Overlay -->
 <div class="cart-overlay" id="cartOverlay"></div>
-
-<!-- Cart Sidebar -->
 <div class="cart-sidebar" id="cartSidebar">
   <div class="cart-header">
     <h2 class="cart-title">Your Cart</h2>
@@ -806,8 +786,6 @@ a:focus{ outline:2px dashed rgba(0,0,0,0.08); outline-offset:6px }
     <button class="checkout-btn">Checkout</button>
   </div>
 </div>
-
-<!-- Size Selector Modal -->
 <div class="size-modal" id="sizeModal">
   <div class="size-modal-content">
     <button class="close-modal" id="closeModal">×</button>
@@ -955,11 +933,8 @@ a:focus{ outline:2px dashed rgba(0,0,0,0.08); outline-offset:6px }
 </div>
 
 <script>
-// ===== CART FUNCTIONALITY =====
 let cart = [];
 let currentProduct = null;
-
-// DOM Elements
 const cartIcon = document.getElementById('cartIcon');
 const cartOverlay = document.getElementById('cartOverlay');
 const cartSidebar = document.getElementById('cartSidebar');
@@ -975,14 +950,10 @@ const sizeModal = document.getElementById('sizeModal');
 const closeModal = document.getElementById('closeModal');
 const sizeOptions = document.querySelectorAll('.size-option');
 const addToCartModal = document.getElementById('addToCartModal');
-
-// Open Cart
 cartIcon.addEventListener('click', () => {
   cartSidebar.classList.add('open');
   cartOverlay.style.display = 'block';
 });
-
-// Close Cart
 closeCart.addEventListener('click', closeCartSidebar);
 cartOverlay.addEventListener('click', closeCartSidebar);
 
@@ -990,8 +961,6 @@ function closeCartSidebar() {
   cartSidebar.classList.remove('open');
   cartOverlay.style.display = 'none';
 }
-
-// Update Cart UI
 function updateCartUI() {
   cartItems.innerHTML = '';
   if (cart.length === 0) {
@@ -1022,14 +991,11 @@ function updateCartUI() {
       `;
       cartItems.appendChild(itemDiv);
     });
-
     cartCount.textContent = cart.reduce((acc, item) => acc + item.quantity, 0);
     cartSubtotal.textContent = `€${subtotal.toFixed(2)}`;
     const shipping = subtotal > 0 ? 9.99 : 0;
     cartShipping.textContent = `€${shipping.toFixed(2)}`;
     cartTotal.textContent = `€${(subtotal + shipping).toFixed(2)}`;
-
-    // Add listeners for quantity buttons and remove buttons
     document.querySelectorAll('.quantity-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const idx = parseInt(btn.dataset.index);
@@ -1051,8 +1017,6 @@ function updateCartUI() {
     });
   }
 }
-
-// Open Size Modal
 document.querySelectorAll('.add-cart-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     currentProduct = {
@@ -1067,22 +1031,16 @@ document.querySelectorAll('.add-cart-btn').forEach(btn => {
 document.querySelector('.checkout-btn').addEventListener('click', () => {
   window.open('https://t.me/xo4ykinder', '_blank');
 });
-
-// Close Size Modal
 closeModal.addEventListener('click', () => {
   sizeModal.style.display = 'none';
   clearSelectedSize();
 });
-
-// Select Size
 sizeOptions.forEach(option => {
   option.addEventListener('click', () => {
     sizeOptions.forEach(opt => opt.classList.remove('selected'));
     option.classList.add('selected');
   });
 });
-
-// Add to Cart from Modal
 addToCartModal.addEventListener('click', () => {
   const selectedSize = document.querySelector('.size-option.selected');
   if (!selectedSize) {
@@ -1090,8 +1048,6 @@ addToCartModal.addEventListener('click', () => {
     return;
   }
   const product = { ...currentProduct, size: selectedSize.dataset.size, quantity: 1 };
-
-  // Check if same product+size exists
   const existing = cart.find(item => item.id === product.id && item.size === product.size);
   if (existing) {
     existing.quantity++;
@@ -1102,13 +1058,9 @@ addToCartModal.addEventListener('click', () => {
   clearSelectedSize();
   updateCartUI();
 });
-
-// Clear selected size
 function clearSelectedSize() {
   sizeOptions.forEach(opt => opt.classList.remove('selected'));
 }
-
-// ================= LIGHTBOX =================
 const lightbox = document.getElementById('lightbox');
 const lbImg = document.getElementById('lightbox-img');
 document.querySelectorAll('.tile').forEach(tile => {
@@ -1129,8 +1081,6 @@ function closeLightbox() {
 }
 lightbox.addEventListener('click', e => { if (e.target !== lbImg) closeLightbox(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
-
-// ================= CURSOR =================
 const cursor = document.getElementById('cursor');
 document.addEventListener('mousemove', e => {
   cursor.style.left = e.clientX + 'px';
@@ -1143,20 +1093,14 @@ document.addEventListener('mousemove', e => {
   });
 });
 if(('ontouchstart' in window) || navigator.maxTouchPoints > 0){ cursor.style.display='none'; }
-
-// ================= BG PARALLAX =================
 const bg = document.getElementById('bg');
 window.addEventListener('scroll', () => {
   const offset = window.scrollY * 0.25;
   bg.style.transform = `translate3d(0, ${offset}px, 0)`;
 }, { passive:true });
-
-// ================= REVEAL ON SCROLL =================
 const blocks=document.querySelectorAll('section.block, .hero');
 const reveal=()=>{ const trigger=window.innerHeight*0.85; blocks.forEach(b=>{if(b.getBoundingClientRect().top<trigger)b.classList.add('visible')}); };
 window.addEventListener('scroll', reveal, {passive:true}); reveal();
-
-// ================= HERO ANIMATION =================
 (function animateHero(){
   const el=document.getElementById('hero-animated');
   const text=el.textContent.trim(); el.textContent='';
@@ -1171,7 +1115,6 @@ window.addEventListener('scroll', reveal, {passive:true}); reveal();
 </script>
 <canvas id="rain"></canvas>
 <script>
-// ================= RAIN =================
 const rainCanvas = document.getElementById("rain");
 const rainCtx = rainCanvas.getContext("2d");
 function resizeRain(){ rainCanvas.width=window.innerWidth; rainCanvas.height=window.innerHeight; }
@@ -1186,11 +1129,8 @@ animateRain();
 const intro = document.getElementById("intro");
 const canvas = document.getElementById("intro-light");
 const ctx = canvas.getContext("2d");
-
 function resize(){canvas.width = window.innerWidth; canvas.height = window.innerHeight;}
 resize(); window.addEventListener("resize", resize);
-
-// Liquid glow animation
 let t = 0;
 function draw() {
   ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -1203,16 +1143,28 @@ function draw() {
   requestAnimationFrame(draw);
 }
 draw();
-
-// Laser stripes
 for(let i=0;i<3;i++){
   const div = document.createElement("div");
   div.classList.add("strip");
   intro.appendChild(div);
 }
-
-// Hide intro after 3 seconds
 setTimeout(()=>{ intro.classList.add("hide"); }, 3000);
+document.querySelectorAll('.tile').forEach(tile => {
+  const arrow = tile.querySelector('.arrow');
+  if (!arrow) return;
+
+  const img = tile.querySelector('img');
+  const variants = JSON.parse(tile.dataset.variants || "[]");
+  let currentIndex = 0;
+
+  arrow.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (variants.length > 1) {
+      currentIndex = (currentIndex + 1) % variants.length;
+      img.src = variants[currentIndex];
+    }
+  });
+});
 </script>
 </body>
 </html>
