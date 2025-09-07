@@ -1,11 +1,73 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Theory of Legit Threads — Brutal Luxury</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
+  #intro {
+  position: fixed;
+  inset: 0;
+  background: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  overflow: hidden;
+}
+.intro-logo {
+  font-family: "Playfair Display", serif;
+  font-weight: 900;
+  font-size: 96px;
+  color: #fff;
+  position: relative;
+  z-index: 10;
+  animation: glitch 1s infinite;
+  letter-spacing: 2px;
+}
+@keyframes glitch {
+  0% { text-shadow: 2px 0 #ff0055, -2px 0 #00ffff; }
+  20% { text-shadow: -2px 0 #ff0, 2px 0 #ff0055; }
+  40% { text-shadow: 2px 0 #00ffff, -2px 0 #ff0; }
+  60% { text-shadow: -3px 0 #ff0055, 3px 0 #00ffff; }
+  80% { text-shadow: 2px 0 #ff0, -2px 0 #ff0055; }
+  100% { text-shadow: none; }
+}
+
+/* Laser Stripes */
+.strip {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #ff0055, #00ffff, transparent);
+  opacity: 0.7;
+  top: 0;
+  left: 0;
+  transform: translateY(-50%);
+  animation: stripeMove 1.5s infinite linear;
+}
+.strip:nth-child(2) { animation-delay: 0.3s; }
+.strip:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes stripeMove {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+/* Fade Out Intro */
+#intro.hide {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease;
+}
+
+/* Liquid glow behind logo */
+#intro-light {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+}
  #rain {
   position: fixed;
   top: 0; left: 0;
@@ -400,115 +462,376 @@ footer{
   transform:translate(-50%,-50%) scale(1);
 }
 a:focus{ outline:2px dashed rgba(0,0,0,0.08); outline-offset:6px }
-</style>
-<!-- ===== HIGH-FASHION INTRO ===== -->
-<div id="intro">
-  <canvas id="intro-light"></canvas>
-  <div class="intro-logo">TLT</div>
-</div>
 
-<style>
-#intro {
+/* ===== CART STYLES ===== */
+.cart-icon {
   position: fixed;
-  inset: 0;
-  background: #0a0a0a;
+  top: 30px;
+  right: 30px;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.9);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 99999;
-  overflow: hidden;
-}
-.intro-logo {
-  font-family: "Playfair Display", serif;
-  font-weight: 900;
-  font-size: 96px;
-  color: #fff;
-  position: relative;
-  z-index: 10;
-  animation: glitch 1s infinite;
-  letter-spacing: 2px;
-}
-@keyframes glitch {
-  0% { text-shadow: 2px 0 #ff0055, -2px 0 #00ffff; }
-  20% { text-shadow: -2px 0 #ff0, 2px 0 #ff0055; }
-  40% { text-shadow: 2px 0 #00ffff, -2px 0 #ff0; }
-  60% { text-shadow: -3px 0 #ff0055, 3px 0 #00ffff; }
-  80% { text-shadow: 2px 0 #ff0, -2px 0 #ff0055; }
-  100% { text-shadow: none; }
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
-/* Laser Stripes */
-.strip {
+.cart-icon:hover {
+  transform: scale(1.1);
+}
+
+.cart-count {
   position: absolute;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #ff0055, #00ffff, transparent);
-  opacity: 0.7;
+  top: -5px;
+  right: -5px;
+  background: #ff0055;
+  color: white;
+  font-size: 12px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.cart-overlay {
+  position: fixed;
   top: 0;
   left: 0;
-  transform: translateY(-50%);
-  animation: stripeMove 1.5s infinite linear;
-}
-.strip:nth-child(2) { animation-delay: 0.3s; }
-.strip:nth-child(3) { animation-delay: 0.6s; }
-
-@keyframes stripeMove {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100%); }
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: none;
+  z-index: 999;
 }
 
-/* Fade Out Intro */
-#intro.hide {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 1s ease;
+.cart-sidebar {
+  position: fixed;
+  top: 0;
+  right: -400px;
+  width: 380px;
+  height: 100%;
+  background: white;
+  z-index: 1000;
+  padding: 30px;
+  overflow-y: auto;
+  transition: right 0.4s ease;
+  box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
 }
 
-/* Liquid glow behind logo */
-#intro-light {
+.cart-sidebar.open {
+  right: 0;
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.cart-title {
+  font-family: "Playfair Display";
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.close-cart {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.cart-items {
+  margin-bottom: 30px;
+}
+
+.cart-item {
+  display: flex;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.cart-item-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+.cart-item-details {
+  flex: 1;
+}
+
+.cart-item-name {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.cart-item-size {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.cart-item-price {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.cart-item-actions {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-btn {
+  width: 25px;
+  height: 25px;
+  background: none;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.quantity-value {
+  margin: 0 10px;
+  width: 30px;
+  text-align: center;
+}
+
+.remove-item {
+  margin-left: 15px;
+  color: #ff0055;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.cart-summary {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding-top: 20px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.summary-total {
+  font-weight: 700;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.checkout-btn {
+  width: 100%;
+  padding: 15px;
+  background: black;
+  color: white;
+  border: none;
+  margin-top: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.checkout-btn:hover {
+  background: #333;
+}
+
+.empty-cart {
+  text-align: center;
+  padding: 40px 0;
+  color: var(--muted);
+}
+
+/* Size Selector Modal */
+.size-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+}
+
+.size-modal-content {
+  background: white;
+  padding: 30px;
+  max-width: 400px;
+  width: 90%;
+  border-radius: 5px;
+  position: relative;
+}
+
+.close-modal {
   position: absolute;
-  inset: 0;
-  z-index: 5;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.size-options {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.size-option {
+  padding: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.size-option:hover {
+  border-color: black;
+}
+
+.size-option.selected {
+  background: black;
+  color: white;
+  border-color: black;
+}
+
+.add-to-cart-btn {
+  width: 100%;
+  padding: 15px;
+  background: black;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* Add to cart button on products */
+.add-cart-btn {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+.tile:hover .add-cart-btn {
+  opacity: 1;
+}
+
+/* Cart item animation */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.cart-item {
+  animation: slideIn 0.3s ease;
 }
 </style>
-
-<script>
-const intro = document.getElementById("intro");
-const canvas = document.getElementById("intro-light");
-const ctx = canvas.getContext("2d");
-function resize(){canvas.width = window.innerWidth; canvas.height = window.innerHeight;}
-resize(); window.addEventListener("resize", resize);
-
-// Liquid glow animation
-let t = 0;
-function draw() {
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  for(let i=0;i<canvas.width;i+=15){
-    let y = canvas.height/2 + Math.sin(i*0.02 + t*0.03)*40;
-    ctx.fillStyle = `rgba(255,255,255,0.03)`;
-    ctx.fillRect(i, y, 10, canvas.height/2);
-  }
-  t++;
-  requestAnimationFrame(draw);
-}
-draw();
-
-// Laser stripes
-for(let i=0;i<3;i++){
-  const div = document.createElement("div");
-  div.classList.add("strip");
-  intro.appendChild(div);
-}
-
-// Hide intro after 3 seconds
-setTimeout(()=>{
-  intro.classList.add("hide");
-}, 3000);
-</script>
 </head>
 <body>
+  <div id="intro">
+  <canvas id="intro-light"></canvas>
+  <div class="intro-logo">TLT</div>
+</div>
 <div class="bg-wrap" id="bg"></div>
 <div class="cursor" id="cursor"></div>
+
+<!-- Cart Icon -->
+<div class="cart-icon" id="cartIcon">
+  <span>🛒</span>
+  <span class="cart-count" id="cartCount">0</span>
+</div>
+
+<!-- Cart Overlay -->
+<div class="cart-overlay" id="cartOverlay"></div>
+
+<!-- Cart Sidebar -->
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h2 class="cart-title">Your Cart</h2>
+    <button class="close-cart" id="closeCart">×</button>
+  </div>
+  
+  <div class="cart-items" id="cartItems">
+    <div class="empty-cart" id="emptyCart">Your cart is empty</div>
+  </div>
+  
+  <div class="cart-summary" id="cartSummary" style="display: none;">
+    <div class="summary-row">
+      <span>Subtotal</span>
+      <span id="cartSubtotal">€0.00</span>
+    </div>
+    <div class="summary-row">
+      <span>Shipping</span>
+      <span id="cartShipping">€0.00</span>
+    </div>
+    <div class="summary-row summary-total">
+      <span>Total</span>
+      <span id="cartTotal">€0.00</span>
+    </div>
+    
+    <button class="checkout-btn">Checkout</button>
+  </div>
+</div>
+
+<!-- Size Selector Modal -->
+<div class="size-modal" id="sizeModal">
+  <div class="size-modal-content">
+    <button class="close-modal" id="closeModal">×</button>
+    <h3>Select Size</h3>
+    <div class="size-options" id="sizeOptions">
+  <div class="size-option" data-size="XS">XS</div>
+  <div class="size-option" data-size="S">S</div>
+  <div class="size-option" data-size="M">M</div>
+  <div class="size-option" data-size="L">L</div>
+  <div class="size-option" data-size="XL">XL</div>
+  <div class="size-option" data-size="36">36</div>
+  <div class="size-option" data-size="37">37</div>
+  <div class="size-option" data-size="38">38</div>
+  <div class="size-option" data-size="39">39</div>
+  <div class="size-option" data-size="40">40</div>
+  <div class="size-option" data-size="41">41</div>
+  <div class="size-option" data-size="42">42</div>
+  <div class="size-option" data-size="43">43</div>
+  <div class="size-option" data-size="44">44</div>
+</div>
+    <button class="add-to-cart-btn" id="addToCartModal">Add to Cart</button>
+  </div>
+</div>
+
 <header>
   <div class="brand" role="banner" style="justify-content:flex-start; gap:16px;">
     <div class="logo" aria-hidden="true">
@@ -575,28 +898,35 @@ setTimeout(()=>{
 <h2>Lookbook</h2>
 <div class="lookbook" id="lookbook-grid">
 <div class="tile" data-variants='["https://www.mytheresa.com/media/1094/1238/100/6f/P00707595.jpg","https://image.goat.com/transform/v1/attachments/product_template_pictures/images/097/962/738/original/RU01D3868_LCO_1111.png.png?action=crop&width=750"]' tabindex="0" role="button" aria-pressed="false">
-<img src="https://www.mytheresa.com/media/1094/1238/100/6f/P00707595.jpg" alt="Rick Owens Geobasket">
-<div class="meta"><div class="desc">Rick Owens Geobasket</div><div class="price">€80</div></div><div class="arrow">&#8594;</div>
+  <img src="https://www.mytheresa.com/media/1094/1238/100/6f/P00707595.jpg" alt="Rick Owens Geobasket">
+  <div class="meta"><div class="desc">Rick Owens Geobasket</div><div class="price">€80</div></div>
+  <div class="arrow">&#8594;</div>
+  <button class="add-cart-btn" data-id="1" data-name="Rick Owens Geobasket" data-price="80" data-image="https://www.mytheresa.com/media/1094/1238/100/6f/P00707595.jpg">Add to Cart</button>
 </div>
 <div class="tile" data-variants='["https://ae-pic-a1.aliexpress-media.com/kf/S4b3b44bab46c45b88cf68d0ecfe44da3a.jpg_640x640q75.jpg_.avif","https://ae-pic-a1.aliexpress-media.com/kf/Sbdeee13ef6644847b078283ddc254c1ek.jpg_640x640q75.jpg_.avif"]' tabindex="0" role="button" aria-pressed="false">
-<img src="https://ae-pic-a1.aliexpress-media.com/kf/S4b3b44bab46c45b88cf68d0ecfe44da3a.jpg_640x640q75.jpg_.avif" alt="Aphex Twin sweatshirt">
-<div class="meta"><div class="desc">Aphex Twin sweatshirt</div><div class="price">€45</div></div><div class="arrow">&#8594;</div>
+  <img src="https://ae-pic-a1.aliexpress-media.com/kf/S4b3b44bab46c45b88cf68d0ecfe44da3a.jpg_640x640q75.jpg_.avif" alt="Aphex Twin sweatshirt">
+  <div class="meta"><div class="desc">Aphex Twin sweatshirt</div><div class="price">€45</div></div>
+  <div class="arrow">&#8594;</div>
+  <button class="add-cart-btn" data-id="2" data-name="Aphex Twin sweatshirt" data-price="45" data-image="https://ae-pic-a1.aliexpress-media.com/kf/S4b3b44bab46c45b88cf68d0ecfe44da3a.jpg_640x640q75.jpg_.avif">Add to Cart</button>
 </div>
 <div class="tile" data-src="https://www.mytheresa.com/media/1094/1238/100/02/P00941989.jpg" tabindex="0" role="button" aria-pressed="false">
-<img src="https://www.mytheresa.com/media/1094/1238/100/02/P00941989.jpg" alt="Acne Studios">
-<div class="meta"><div class="desc">Acne Studios</div><div class="price">€40</div></div>
+  <img src="https://www.mytheresa.com/media/1094/1238/100/02/P00941989.jpg" alt="Acne Studios">
+  <div class="meta"><div class="desc">Acne Studios</div><div class="price">€40</div></div>
+  <button class="add-cart-btn" data-id="3" data-name="Acne Studios" data-price="40" data-image="https://www.mytheresa.com/media/1094/1238/100/02/P00941989.jpg">Add to Cart</button>
 </div>
 <div class="tile" data-src="https://studioslow.ru/upload/resize_cache/iblock/3ff/555_755_2/8zgwtqnkpa489d84vrvehnzh0bqwgbu5.webp" tabindex="0" role="button" aria-pressed="false">
-<img src="https://studioslow.ru/upload/resize_cache/iblock/3ff/555_755_2/8zgwtqnkpa489d84vrvehnzh0bqwgbu5.webp" alt="1017 Alyx 9SM">
-<div class="meta"><div class="desc">1017 Alyx 9SM</div><div class="price">€30</div></div>
+  <img src="https://studioslow.ru/upload/resize_cache/iblock/3ff/555_755_2/8zgwtqnkpa489d84vrvehnzh0bqwgbu5.webp" alt="1017 Alyx 9SM">
+  <div class="meta"><div class="desc">1017 Alyx 9SM</div><div class="price">€30</div></div>
+  <button class="add-cart-btn" data-id="4" data-name="1017 Alyx 9SM" data-price="30" data-image="https://studioslow.ru/upload/resize_cache/iblock/3ff/555_755_2/8zgwtqnkpa489d84vrvehnzh0bqwgbu5.webp">Add to Cart</button>
 </div>
 <div class="tile" data-src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkcNU4uKIrIPomw7-twqk_14fRjtsr7LscoA&s" tabindex="0" role="button" aria-pressed="false">
-<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkcNU4uKIrIPomw7-twqk_14fRjtsr7LscoA&s" alt="TlT Solrim AkPants">
-<div class="meta"><div class="desc">TlT Solrim AkPants</div><div class="price">€45</div></div>
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkcNU4uKIrIPomw7-twqk_14fRjtsr7LscoA&s" alt="TlT Solrim AkPants">
+  <div class="meta"><div class="desc">TlT Solrim AkPants</div><div class="price">€45</div></div>
+  <button class="add-cart-btn" data-id="5" data-name="TlT Solrim AkPants" data-price="45" data-image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkcNU4uKIrIPomw7-twqk_14fRjtsr7LscoA&s">Add to Cart</button>
 </div>
 <div class="tile" data-src="https://i.imgur.com/veindyv.jpeg" tabindex="0" role="button" aria-pressed="false">
-<img src="https://i.imgur.com/veindyv.jpeg" alt="Editorial detail">
-<div class="meta"><div class="desc">Detail drop</div><div class="price">—</div></div>
+  <img src="https://i.imgur.com/veindyv.jpeg" alt="Editorial detail">
+  <div class="meta"><div class="desc">Detail drop</div><div class="price">—</div></div>
 </div>
 </div>
 </section>
@@ -625,6 +955,182 @@ setTimeout(()=>{
 </div>
 
 <script>
+// ===== CART FUNCTIONALITY =====
+let cart = [];
+let currentProduct = null;
+
+// DOM Elements
+const cartIcon = document.getElementById('cartIcon');
+const cartOverlay = document.getElementById('cartOverlay');
+const cartSidebar = document.getElementById('cartSidebar');
+const closeCart = document.getElementById('closeCart');
+const cartItems = document.getElementById('cartItems');
+const emptyCart = document.getElementById('emptyCart');
+const cartSummary = document.getElementById('cartSummary');
+const cartCount = document.getElementById('cartCount');
+const cartSubtotal = document.getElementById('cartSubtotal');
+const cartShipping = document.getElementById('cartShipping');
+const cartTotal = document.getElementById('cartTotal');
+const sizeModal = document.getElementById('sizeModal');
+const closeModal = document.getElementById('closeModal');
+const sizeOptions = document.querySelectorAll('.size-option');
+const addToCartModal = document.getElementById('addToCartModal');
+
+// Open Cart
+cartIcon.addEventListener('click', () => {
+  cartSidebar.classList.add('open');
+  cartOverlay.style.display = 'block';
+});
+
+// Close Cart
+closeCart.addEventListener('click', closeCartSidebar);
+cartOverlay.addEventListener('click', closeCartSidebar);
+
+function closeCartSidebar() {
+  cartSidebar.classList.remove('open');
+  cartOverlay.style.display = 'none';
+}
+
+// Update Cart UI
+function updateCartUI() {
+  cartItems.innerHTML = '';
+  if (cart.length === 0) {
+    emptyCart.style.display = 'block';
+    cartSummary.style.display = 'none';
+  } else {
+    emptyCart.style.display = 'none';
+    cartSummary.style.display = 'block';
+    let subtotal = 0;
+
+    cart.forEach((item, index) => {
+      subtotal += item.price * item.quantity;
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'cart-item';
+      itemDiv.innerHTML = `
+        <img src="${item.image}" class="cart-item-image" alt="${item.name}">
+        <div class="cart-item-details">
+          <div class="cart-item-name">${item.name}</div>
+          <div class="cart-item-size">Size: ${item.size}</div>
+          <div class="cart-item-price">€${item.price.toFixed(2)}</div>
+          <div class="cart-item-actions">
+            <button class="quantity-btn" data-index="${index}" data-action="decrease">-</button>
+            <span class="quantity-value">${item.quantity}</span>
+            <button class="quantity-btn" data-index="${index}" data-action="increase">+</button>
+            <button class="remove-item" data-index="${index}">Remove</button>
+          </div>
+        </div>
+      `;
+      cartItems.appendChild(itemDiv);
+    });
+
+    cartCount.textContent = cart.reduce((acc, item) => acc + item.quantity, 0);
+    cartSubtotal.textContent = `€${subtotal.toFixed(2)}`;
+    const shipping = subtotal > 0 ? 9.99 : 0;
+    cartShipping.textContent = `€${shipping.toFixed(2)}`;
+    cartTotal.textContent = `€${(subtotal + shipping).toFixed(2)}`;
+
+    // Add listeners for quantity buttons and remove buttons
+    document.querySelectorAll('.quantity-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.dataset.index);
+        if (btn.dataset.action === 'increase') {
+          cart[idx].quantity++;
+        } else if (btn.dataset.action === 'decrease') {
+          if (cart[idx].quantity > 1) cart[idx].quantity--;
+        }
+        updateCartUI();
+      });
+    });
+
+    document.querySelectorAll('.remove-item').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.dataset.index);
+        cart.splice(idx, 1);
+        updateCartUI();
+      });
+    });
+  }
+}
+
+// Open Size Modal
+document.querySelectorAll('.add-cart-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentProduct = {
+      id: btn.dataset.id,
+      name: btn.dataset.name,
+      price: parseFloat(btn.dataset.price),
+      image: btn.dataset.image
+    };
+    sizeModal.style.display = 'flex';
+  });
+});
+document.querySelector('.checkout-btn').addEventListener('click', () => {
+  window.open('https://t.me/xo4ykinder', '_blank');
+});
+
+// Close Size Modal
+closeModal.addEventListener('click', () => {
+  sizeModal.style.display = 'none';
+  clearSelectedSize();
+});
+
+// Select Size
+sizeOptions.forEach(option => {
+  option.addEventListener('click', () => {
+    sizeOptions.forEach(opt => opt.classList.remove('selected'));
+    option.classList.add('selected');
+  });
+});
+
+// Add to Cart from Modal
+addToCartModal.addEventListener('click', () => {
+  const selectedSize = document.querySelector('.size-option.selected');
+  if (!selectedSize) {
+    alert('Please select a size.');
+    return;
+  }
+  const product = { ...currentProduct, size: selectedSize.dataset.size, quantity: 1 };
+
+  // Check if same product+size exists
+  const existing = cart.find(item => item.id === product.id && item.size === product.size);
+  if (existing) {
+    existing.quantity++;
+  } else {
+    cart.push(product);
+  }
+  sizeModal.style.display = 'none';
+  clearSelectedSize();
+  updateCartUI();
+});
+
+// Clear selected size
+function clearSelectedSize() {
+  sizeOptions.forEach(opt => opt.classList.remove('selected'));
+}
+
+// ================= LIGHTBOX =================
+const lightbox = document.getElementById('lightbox');
+const lbImg = document.getElementById('lightbox-img');
+document.querySelectorAll('.tile').forEach(tile => {
+  const src = tile.dataset.src || tile.querySelector('img').src;
+  tile.addEventListener('click', () => openLightbox(src));
+  tile.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(src); } });
+});
+function openLightbox(src) {
+  lbImg.src = src;
+  lightbox.classList.add('show');
+  lightbox.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  lightbox.classList.remove('show');
+  lightbox.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+lightbox.addEventListener('click', e => { if (e.target !== lbImg) closeLightbox(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+// ================= CURSOR =================
 const cursor = document.getElementById('cursor');
 document.addEventListener('mousemove', e => {
   cursor.style.left = e.clientX + 'px';
@@ -632,146 +1138,81 @@ document.addEventListener('mousemove', e => {
 });
 ['a','button','.tile','.nav-link'].forEach(el => {
   document.querySelectorAll(el).forEach(node => {
-    node.addEventListener('mouseenter', ()=>cursor.classList.add('active'));
-    node.addEventListener('mouseleave', ()=>cursor.classList.remove('active'));
+    node.addEventListener('mouseenter', () => cursor.classList.add('active'));
+    node.addEventListener('mouseleave', () => cursor.classList.remove('active'));
   });
 });
-if(('ontouchstart' in window)||navigator.maxTouchPoints>0){cursor.style.display='none';}
+if(('ontouchstart' in window) || navigator.maxTouchPoints > 0){ cursor.style.display='none'; }
 
+// ================= BG PARALLAX =================
 const bg = document.getElementById('bg');
 window.addEventListener('scroll', () => {
-  const offset = window.scrollY * 0.25; 
+  const offset = window.scrollY * 0.25;
   bg.style.transform = `translate3d(0, ${offset}px, 0)`;
-}, { passive: true });
+}, { passive:true });
 
-const blocks = document.querySelectorAll('section.block, .hero');
-const reveal = ()=>{ const trigger = window.innerHeight*0.85; blocks.forEach(b=>{if(b.getBoundingClientRect().top<trigger)b.classList.add('visible')}); };
-window.addEventListener('scroll',reveal,{passive:true});
-reveal();
+// ================= REVEAL ON SCROLL =================
+const blocks=document.querySelectorAll('section.block, .hero');
+const reveal=()=>{ const trigger=window.innerHeight*0.85; blocks.forEach(b=>{if(b.getBoundingClientRect().top<trigger)b.classList.add('visible')}); };
+window.addEventListener('scroll', reveal, {passive:true}); reveal();
 
+// ================= HERO ANIMATION =================
 (function animateHero(){
   const el=document.getElementById('hero-animated');
-  const text=el.textContent.trim();
-  el.textContent='';
+  const text=el.textContent.trim(); el.textContent='';
   text.split('').forEach((ch,i)=>{
-    const span=document.createElement('span');
-    span.textContent=ch;
-    span.style.opacity=0;
-    span.style.display='inline-block';
-    span.style.transform='translateY(8px)';
+    const span=document.createElement('span'); span.textContent=ch;
+    span.style.opacity=0; span.style.display='inline-block'; span.style.transform='translateY(8px)';
     span.style.transition='all 400ms cubic-bezier(.2,.9,.2,1)';
     el.appendChild(span);
     setTimeout(()=>{span.style.opacity=1; span.style.transform='translateY(0)';}, i*28);
   });
 })();
-
-const tiles = document.querySelectorAll('.tile');
-const lightbox = document.getElementById('lightbox');
-const lbImg = document.getElementById('lightbox-img');
-tiles.forEach(tile=>{
-  const src = tile.dataset.src || tile.querySelector('img').src;
-  tile.addEventListener('click', ()=>openLightbox(src));
-  tile.addEventListener('keydown',(e)=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openLightbox(src)}});
-  const arrow = tile.querySelector('.arrow');
-  const variants = tile.dataset.variants?JSON.parse(tile.dataset.variants):null;
-  if(arrow && variants){
-    let idx=0;
-    arrow.addEventListener('click',e=>{
-      e.stopPropagation();
-      idx=(idx+1)%variants.length;
-      tile.querySelector('img').src=variants[idx];
-    });
-  }
-});
-function openLightbox(src){lbImg.src=src;lightbox.classList.add('show');lightbox.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
-function closeLightbox(){lightbox.classList.remove('show');lightbox.setAttribute('aria-hidden','true');document.body.style.overflow='';}
-lightbox.addEventListener('click', e=>{if(e.target!==lbImg)closeLightbox();});
-document.addEventListener('keydown', e=>{if(e.key==='Escape')closeLightbox();});
-
-document.querySelectorAll('img').forEach(img=>{if(!img.hasAttribute('loading'))img.setAttribute('loading','lazy');});
-if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.querySelectorAll('*').forEach(n=>n.style.transitionDuration&& (n.style.transitionDuration='0.01ms'));}
-window.addEventListener('load', () => {
-  document.querySelector('.logo').classList.add('show');
-});
 </script>
 <canvas id="rain"></canvas>
 <script>
+// ================= RAIN =================
 const rainCanvas = document.getElementById("rain");
 const rainCtx = rainCanvas.getContext("2d");
-
-function resizeRain() {
-  rainCanvas.width = window.innerWidth;
-  rainCanvas.height = window.innerHeight;
-}
-resizeRain();
-window.addEventListener("resize", resizeRain);
-
-const RAIN_ANGLE = -0.4;
-const FAST_COUNT = 400;
-const SLOW_COUNT = 150;
-
-class Raindrop {
-  constructor() { this.reset(); }
-  reset() {
-    this.x = Math.random() * rainCanvas.width;
-    this.y = Math.random() * -rainCanvas.height;
-    this.len = 15 + Math.random() * 25;
-    this.speed = 8 + Math.random() * 12;
-    this.opacity = 0.2 + Math.random() * 0.3;
-  }
-  update() {
-    this.x += RAIN_ANGLE * this.speed;
-    this.y += this.speed;
-    if (this.y > rainCanvas.height || this.x < 0 || this.x > rainCanvas.width) this.reset();
-  }
-  draw() {
-    rainCtx.strokeStyle = `rgba(255,255,255,${this.opacity})`;
-    rainCtx.lineWidth = 1;
-    rainCtx.beginPath();
-    rainCtx.moveTo(this.x, this.y);
-    rainCtx.lineTo(this.x - RAIN_ANGLE * this.len, this.y - this.len);
-    rainCtx.stroke();
-  }
-}
-
-class Drop {
-  constructor() { this.reset(); }
-  reset() {
-    this.x = Math.random() * rainCanvas.width;
-    this.y = Math.random() * rainCanvas.height;
-    this.len = 6 + Math.random() * 12;
-    this.speed = 1 + Math.random() * 2;
-    this.opacity = 0.1 + Math.random() * 0.2;
-  }
-  update() {
-    this.x += RAIN_ANGLE * this.speed;
-    this.y += this.speed;
-    if (this.y > rainCanvas.height || this.x < 0 || this.x > rainCanvas.width) {
-      this.y = 0;
-      this.x = Math.random() * rainCanvas.width;
-    }
-  }
-  draw() {
-    rainCtx.strokeStyle = `rgba(255,255,255,${this.opacity})`;
-    rainCtx.lineWidth = 2;
-    rainCtx.beginPath();
-    rainCtx.moveTo(this.x, this.y);
-    rainCtx.lineTo(this.x, this.y + this.len);
-    rainCtx.stroke();
-  }
-}
-
-let dropsFast = Array.from({length: FAST_COUNT}, () => new Raindrop());
-let dropsSlow = Array.from({length: SLOW_COUNT}, () => new Drop());
-
-function animateRain() {
-  rainCtx.clearRect(0, 0, rainCanvas.width, rainCanvas.height);
-  dropsFast.forEach(d => { d.update(); d.draw(); });
-  dropsSlow.forEach(d => { d.update(); d.draw(); });
-  requestAnimationFrame(animateRain);
-}
+function resizeRain(){ rainCanvas.width=window.innerWidth; rainCanvas.height=window.innerHeight; }
+resizeRain(); window.addEventListener("resize", resizeRain);
+const RAIN_ANGLE=-0.4, FAST_COUNT=400, SLOW_COUNT=150;
+class Raindrop{ constructor(){this.reset();} reset(){this.x=Math.random()*rainCanvas.width; this.y=Math.random()*-rainCanvas.height; this.len=15+Math.random()*25; this.speed=8+Math.random()*12; this.opacity=0.2+Math.random()*0.3;} update(){this.x+=RAIN_ANGLE*this.speed; this.y+=this.speed; if(this.y>rainCanvas.height||this.x<0||this.x>rainCanvas.width)this.reset();} draw(){rainCtx.strokeStyle=`rgba(255,255,255,${this.opacity})`; rainCtx.lineWidth=1; rainCtx.beginPath(); rainCtx.moveTo(this.x,this.y); rainCtx.lineTo(this.x-RAIN_ANGLE*this.len,this.y-this.len); rainCtx.stroke();}}
+class Drop{ constructor(){this.reset();} reset(){this.x=Math.random()*rainCanvas.width; this.y=Math.random()*rainCanvas.height; this.len=6+Math.random()*12; this.speed=1+Math.random()*2; this.opacity=0.1+Math.random()*0.2;} update(){this.x+=RAIN_ANGLE*this.speed; this.y+=this.speed; if(this.y>rainCanvas.height||this.x<0||this.x>rainCanvas.width){this.y=0; this.x=Math.random()*rainCanvas.width;}} draw(){rainCtx.strokeStyle=`rgba(255,255,255,${this.opacity})`; rainCtx.lineWidth=2; rainCtx.beginPath(); rainCtx.moveTo(this.x,this.y); rainCtx.lineTo(this.x,this.y+this.len); rainCtx.stroke();}}
+let dropsFast=Array.from({length:FAST_COUNT},()=>new Raindrop());
+let dropsSlow=Array.from({length:SLOW_COUNT},()=>new Drop());
+function animateRain(){ rainCtx.clearRect(0,0,rainCanvas.width,rainCanvas.height); dropsFast.forEach(d=>{d.update();d.draw();}); dropsSlow.forEach(d=>{d.update();d.draw();}); requestAnimationFrame(animateRain); }
 animateRain();
-</script>
+const intro = document.getElementById("intro");
+const canvas = document.getElementById("intro-light");
+const ctx = canvas.getContext("2d");
+
+function resize(){canvas.width = window.innerWidth; canvas.height = window.innerHeight;}
+resize(); window.addEventListener("resize", resize);
+
+// Liquid glow animation
+let t = 0;
+function draw() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  for(let i=0;i<canvas.width;i+=15){
+    let y = canvas.height/2 + Math.sin(i*0.02 + t*0.03)*40;
+    ctx.fillStyle = `rgba(255,255,255,0.03)`;
+    ctx.fillRect(i, y, 10, canvas.height/2);
+  }
+  t++;
+  requestAnimationFrame(draw);
+}
+draw();
+
+// Laser stripes
+for(let i=0;i<3;i++){
+  const div = document.createElement("div");
+  div.classList.add("strip");
+  intro.appendChild(div);
+}
+
+// Hide intro after 3 seconds
+setTimeout(()=>{ intro.classList.add("hide"); }, 3000);
 </script>
 </body>
 </html>
